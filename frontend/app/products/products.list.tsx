@@ -1,4 +1,6 @@
-export function ProductsList({ products }: { products?: any[] }) {
+import type { ProductsListProps } from "../types";
+
+export function ProductsList({ products }: ProductsListProps) {
   console.log("ProductsList props:", products);
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
@@ -18,28 +20,18 @@ export function ProductsList({ products }: { products?: any[] }) {
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-                    {products?.map(
-                      (
-                        product: {
-                          id: number;
-                          name: string;
-                          ProductType: { name: string };
-                          Colours: { name: string }[];
-                        },
-                        idx: number
-                      ) => (
-                        <tr key={idx} className="hover:bg-gray-50 dark:hover:bg-gray-800/60">
-                          <td className="px-4 py-2 text-gray-800 dark:text-gray-100">{product.id}</td>
-                          <td className="px-4 py-2 text-gray-800 dark:text-gray-100">{product.name}</td>
-                          <td className="px-4 py-2 text-gray-700 dark:text-gray-200">
-                            {product.ProductType?.name || '-'}
-                          </td>
-                          <td className="px-4 py-2 text-gray-700 dark:text-gray-200">
-                            {product.Colours?.map(c => c.name).join(", ")}
-                          </td>
-                        </tr>
-                      )
-                    )}
+                    {products?.map(product => (
+                      <tr key={product.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/60">
+                        <td className="px-4 py-2 text-gray-800 dark:text-gray-100">{product.id}</td>
+                        <td className="px-4 py-2 text-gray-800 dark:text-gray-100">{product.name}</td>
+                        <td className="px-4 py-2 text-gray-700 dark:text-gray-200">
+                          {product.ProductType?.name ?? '-'}
+                        </td>
+                        <td className="px-4 py-2 text-gray-700 dark:text-gray-200">
+                          {product.Colours?.map(c => c.name).join(", ")}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
             </table>
           </nav>
