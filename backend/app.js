@@ -80,6 +80,19 @@ app.get('/products', async (req, res) => {
   res.json(products);
 }); // Returns empty list if no products found
 
+// The API spec and the UI spec are a bit mismatched?
+// API /products list only returns { id, name } according to the spec
+// but the UI page 'view product list' also needs productType and colours.
+// I can keep it as it is but then the UI must call
+// /products/:id for each row to fetch productType + colours, not efficient.
+// I will create a new endpoint /products/details that returns full details for all products.
+app.get('/products/details', async (req, res) => {
+  const products = await Product.findAll({
+    include: [ProductType, Colour]
+  });
+  res.json(products);
+});
+
 app.get('/products/:id', async (req, res) => {
   const product = await Product.findByPk(req.params.id, {
     include: [ProductType, Colour]
@@ -107,6 +120,17 @@ app.post('/products', async (req, res) => {
     console.error('Error creating product:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
+});
+
+// These endpoints are not in spec but are needed for the Create Product Form
+app.get('/product-types', async (req, res) => {
+  const productTypes = await ProductType.findAll();
+  res.json(productTypes);
+});
+
+app.get('/colours', async (req, res) => {
+  const colours = await Colour.findAll();
+  res.json(colours);
 });
 
 // Start server
