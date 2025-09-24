@@ -42,7 +42,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <>
+      <nav className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200">
+        <div className="max-w-5xl mx-auto flex items-center gap-6 px-4 h-16">
+          <a href="/list" className="font-medium text-gray-700 hover:text-black">
+            List products
+          </a>
+          <a href="/create" className="font-medium text-gray-700 hover:text-black">
+            Create a new product
+          </a>
+        </div>
+      </nav>
+      <div className="pt-16">
+        <Outlet />
+      </div>
+    </>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
